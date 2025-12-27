@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Show & Hide Password</title>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Poppins, Arial, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg,#4f72ff,#8c9eff);
+    }
+
+    .container {
+        background: #fff;
+        padding: 35px;
+        border-radius: 12px;
+        width: 330px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        animation: zoomIn 0.4s ease;
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0.5); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .input-container {
+        position: relative;
+        margin-top: 15px;
+    }
+
+    label {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 40px 12px 12px;
+        border-radius: 8px;
+        border: 2px solid #d2d2d2;
+        outline: none;
+        font-size: 16px;
+        transition: .2s;
+    }
+
+    input:focus {
+        border-color: #4f72ff;
+        box-shadow: 0 0 6px rgba(79,114,255,0.6);
+    }
+
+    .toggle-btn {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 22px;
+        color: #444;
+        user-select: none;
+        transition: .2s;
+    }
+
+    .toggle-btn:hover {
+        color: #4f72ff;
+        transform: translateY(-50%) scale(1.15);
+    }
+
+    .tooltip {
+        font-size: 13px;
+        color: #666;
+        margin-top: 10px;
+    }
+
+    .strength {
+        margin-top: 10px;
+        height: 6px;
+        border-radius: 50px;
+        background: #ddd;
+        overflow: hidden;
+    }
+
+    .strength-bar {
+        height: 100%;
+        width: 0%;
+        background: #ff4b4b;
+        transition: width .3s linear;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <label for="passwordInput">Enter Password</label>
+    
+    <div class="input-container">
+        <input id="passwordInput" type="password" placeholder="Your password">
+        <span class="toggle-btn" id="toggleEye">👁️</span>
+    </div>
+
+    <div class="tooltip" id="tooltipText">Click the icon to show password</div>
+
+    <!-- Password Strength -->
+    <div class="strength">
+        <div class="strength-bar" id="strengthBar"></div>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('passwordInput');
+    const eyeIcon = document.getElementById('toggleEye');
+    const tooltip = document.getElementById('tooltipText');
+    const strengthBar = document.getElementById('strengthBar');
+
+    // Show & Hide Password
+    eyeIcon.addEventListener('click', () => {
+        if (input.type === "password") {
+            input.type = "text";
+            eyeIcon.textContent = "🙈";
+            tooltip.textContent = "Click again to hide password";
+        } else {
+            input.type = "password";
+            eyeIcon.textContent = "👁️";
+            tooltip.textContent = "Click the icon to show password";
+        }
+    });
+
+    // Password Strength Indicator
+    input.addEventListener('input', () => {
+        const length = input.value.length;
+
+        if (length === 0) {
+            strengthBar.style.width = "0%";
+        } else if (length <= 4) {
+            strengthBar.style.width = "30%";
+            strengthBar.style.background = "#ff4b4b";
+        } else if (length <= 8) {
+            strengthBar.style.width = "60%";
+            strengthBar.style.background = "#ffcc00";
+        } else {
+            strengthBar.style.width = "100%";
+            strengthBar.style.background = "#4caf50";
+        }
+    });
+</script>
+
+</body>
+</html>
